@@ -94,8 +94,10 @@ export ANDROID_HOME=/home/chn/Android/Sdk
   (it also gates background toasts) and on several OEM skins whenever the app's
   notifications are blocked. This app reports failures three ways
   (`NotificationHelper`, `MqttWidgetProvider.showResult`): notification, toast,
-  and a persistent red error state on the widget itself (label shows the error,
-  cleared on the next tap or on reconfigure). `POST_NOTIFICATIONS` must stay in
+  and a persistent red error icon on the widget itself (cleared on the next tap
+  or on reconfigure). The error text is deliberately **not** rendered inside the
+  widget - it looked like a mini-toast there and was removed (2026-10-03).
+  `POST_NOTIFICATIONS` must stay in
   the manifest and is requested at runtime from `WidgetConfigActivity` and
   `MainActivity`.
 - Paho reports failures as bare reason codes; `PublishErrors` maps them to

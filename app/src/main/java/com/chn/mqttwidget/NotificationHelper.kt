@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat
  * also gates background toasts, and on several OEM skins toasts are dropped
  * whenever the app's notifications are blocked - the error then never reaches
  * the user. A notification is the supported channel, and the widget keeps a
- * persistent red error state as a fallback that needs no permission at all.
+ * persistent red error icon as a fallback that needs no permission at all.
  */
 object NotificationHelper {
 

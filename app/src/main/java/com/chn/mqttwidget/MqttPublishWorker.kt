@@ -74,7 +74,8 @@ class MqttPublishWorker(
 
         fun enqueue(context: Context, appWidgetId: Int) {
             // No network constraint here on purpose: a pending work request is
-            // invisible to the user. Failing fast shows the error on the widget.
+            // invisible to the user. Failing fast reports the error right away
+            // (toast + notification).
             val request = OneTimeWorkRequestBuilder<MqttPublishWorker>()
                 .setInputData(
                     Data.Builder().putInt(KEY_WIDGET_ID, appWidgetId).build()

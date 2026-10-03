@@ -87,18 +87,14 @@ class MqttWidgetProvider : AppWidgetProvider() {
         if (!success) {
             // Deliberately no auto-reset here: a Toast is dropped on Android 13+
             // (and on several OEM skins) whenever the app's notifications are
-            // blocked, so the red icon and the error label are the only feedback
-            // guaranteed to reach the user. Cleared on the next tap or when the
-            // widget is reconfigured.
+            // blocked, so the red icon is the only feedback guaranteed to reach
+            // the user. The error text itself is deliberately not rendered inside
+            // the widget (it looked like a mini-toast there) - it goes to the
+            // Toast and the notification only. Cleared on the next tap or when
+            // the widget is reconfigured.
             manager.updateAppWidget(
                 appWidgetId,
-                buildViews(
-                    context,
-                    appWidgetId,
-                    config,
-                    STATUS_ERROR,
-                    error ?: context.getString(R.string.unknown_error),
-                ),
+                buildViews(context, appWidgetId, config, STATUS_ERROR),
             )
             return
         }
@@ -143,7 +139,6 @@ class MqttWidgetProvider : AppWidgetProvider() {
             appWidgetId: Int,
             config: WidgetConfig?,
             status: Int,
-            errorText: String? = null,
         ): RemoteViews {
             val views = RemoteViews(context.packageName, R.layout.widget_layout)
 
@@ -156,8 +151,7 @@ class MqttWidgetProvider : AppWidgetProvider() {
             views.setImageViewBitmap(R.id.widget_icon, tintedBitmap(context, iconRes, tint))
             views.setTextViewText(
                 R.id.widget_label,
-                errorText
-                    ?: config?.label?.ifBlank { context.getString(R.string.app_name) }
+                config?.label?.ifBlank { context.getString(R.string.app_name) }
                     ?: context.getString(R.string.app_name),
             )
 
