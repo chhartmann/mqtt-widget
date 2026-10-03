@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MQTT Widget</string>
+    <string name="widget_description">Tap to send an MQTT message</string>
+
+    <string name="empty_list">No widgets configured yet.\n\nAdd a widget to your home screen, then tap it to configure.</string>
+    <string name="add_widget">Add widget</string>
+    <string name="add_dialog_title">Add a widget</string>
+    <string name="add_dialog_hint">Place one of your %1$d unconfigured widgets on the home screen. Tapping it opens the setup screen.</string>
+    <string name="add_dialog_no_widgets">All placed widgets are already configured, or none are on the home screen yet. Use your launcher\'s widget picker to add one.</string>
+
+    <string name="widget_unnamed">Widget %1$d</string>
+    <string name="item_subtitle_format">%1$s · %2$s</string>
+
+    <string name="delete_dialog_title">Delete widget?</string>
+    <string name="delete_dialog_message">Remove the configuration for widget %1$d?</string>
+
+    <string name="section_appearance">Appearance</string>
+    <string name="section_broker">MQTT broker</string>
+    <string name="section_message">Message</string>
+
+    <string name="hint_label">Label (optional)</string>
+    <string name="hint_host">Server host</string>
+    <string name="hint_port">Port</string>
+    <string name="hint_tls">TLS</string>
+    <string name="hint_user">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_client_id">Client ID (optional)</string>
+    <string name="hint_topic">Topic</string>
+    <string name="hint_qos">QoS</string>
+    <string name="hint_retain">Retain</string>
+    <string name="hint_payload">Payload</string>
+
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="error_host_required">Server host is required</string>
+    <string name="error_topic_required">Topic is required</string>
+    <string name="publish_failed">MQTT publish failed: %1$s</string>
+    <string name="unknown_error">unknown error</string>
+    <string name="error_no_config">no settings saved for this widget — open its settings and save again</string>
+
+    <string name="notification_channel_errors">Publish errors</string>
+    <string name="notification_error_title">MQTT publish failed</string>
+
+    <string name="reason_bad_credentials">bad username or password</string>
+    <string name="reason_not_authorized">not authorized — check username and password</string>
+    <string name="reason_broker_unavailable">broker unavailable</string>
+    <string name="reason_protocol_version">the broker wants a different MQTT version</string>
+    <string name="reason_client_id">the broker rejected the client id</string>
+    <string name="reason_timeout">the broker did not answer in time</string>
+    <string name="reason_connection_lost">connection to the broker lost</string>
+    <string name="reason_tls">TLS/SSL connection failed</string>
+    <string name="reason_unknown">MQTT error</string>
+</resources>
