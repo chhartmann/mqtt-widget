@@ -25,6 +25,7 @@
     <string name="hint_tls">TLS</string>
     <string name="hint_user">Username</string>
     <string name="hint_password">Password</string>
+    <string name="toggle_password">Show or hide password</string>
     <string name="hint_client_id">Client ID (optional)</string>
     <string name="hint_topic">Topic</string>
     <string name="hint_qos">QoS</string>
