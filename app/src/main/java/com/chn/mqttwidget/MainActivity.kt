@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -72,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     private inner class WidgetAdapter : RecyclerView.Adapter<WidgetAdapter.Holder>() {
 
         inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
-            val icon: ImageView = view.findViewById(R.id.item_icon)
+            val icon: TextView = view.findViewById(R.id.item_icon)
             val title: TextView = view.findViewById(R.id.item_title)
             val subtitle: TextView = view.findViewById(R.id.item_subtitle)
         }
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: Holder, position: Int) {
             val (id, config) = entries[position]
-            holder.icon.setImageResource(MqttWidgetProvider.iconResource(config.icon))
+            MaterialIconFont.bind(holder.icon, config.icon)
             holder.title.text = config.label.ifBlank {
                 getString(R.string.widget_unnamed, id)
             }

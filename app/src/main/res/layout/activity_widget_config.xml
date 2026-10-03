@@ -17,13 +17,52 @@
         android:layout_height="wrap_content"
         android:text="@string/section_appearance" />
 
-    <GridLayout
-        android:id="@+id/icon_grid"
+    <LinearLayout
+        android:id="@+id/icon_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="6"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp" />
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:id="@+id/icon_preview"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/icon_bg"
+            android:gravity="center"
+            android:importantForAccessibility="no"
+            android:textSize="26sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_icon"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+            <TextView
+                android:id="@+id/icon_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/icon_change"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_change" />
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"

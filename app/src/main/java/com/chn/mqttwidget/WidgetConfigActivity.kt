@@ -3,24 +3,23 @@ package com.chn.mqttwidget
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.GridLayout
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 
 class WidgetConfigActivity : AppCompatActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private var selectedIcon = "ic_power"
+    private var selectedIcon = IconCatalog.DEFAULT_ICON
     private var existedBefore = false
 
-    private lateinit var iconGrid: GridLayout
+    private lateinit var iconPreview: TextView
+    private lateinit var iconName: TextView
     private lateinit var labelInput: EditText
     private lateinit var hostInput: EditText
     private lateinit var portInput: EditText
@@ -50,7 +49,7 @@ class WidgetConfigActivity : AppCompatActivity() {
         bindViews()
         existedBefore = WidgetConfigStore.load(this, appWidgetId) != null
         populateFrom(WidgetConfigStore.load(this, appWidgetId))
-        buildIconGrid()
+        setupIconPicker()
         setupQos()
 
         // Publish results are reported via notification (+ toast), which needs
@@ -67,7 +66,8 @@ class WidgetConfigActivity : AppCompatActivity() {
     }
 
     private fun bindViews() {
-        iconGrid = findViewById(R.id.icon_grid)
+        iconPreview = findViewById(R.id.icon_preview)
+        iconName = findViewById(R.id.icon_name)
         labelInput = findViewById(R.id.input_label)
         hostInput = findViewById(R.id.input_host)
         portInput = findViewById(R.id.input_port)
@@ -83,7 +83,8 @@ class WidgetConfigActivity : AppCompatActivity() {
 
     private fun populateFrom(config: WidgetConfig?) {
         val cfg = config ?: WidgetConfig()
-        selectedIcon = cfg.icon
+        // Unknown names (legacy "ic_power" icons) become the default glyph.
+        selectedIcon = MaterialIconFont.catalog(this).normalize(cfg.icon)
         labelInput.setText(cfg.label)
         hostInput.setText(cfg.host)
         portInput.setText(cfg.port.toString())
@@ -97,33 +98,23 @@ class WidgetConfigActivity : AppCompatActivity() {
         payloadInput.setText(cfg.payload)
     }
 
-    private fun buildIconGrid() {
-        iconGrid.removeAllViews()
-        val size = resources.getDimensionPixelSize(R.dimen.icon_choice_size)
-        val margin = resources.getDimensionPixelSize(R.dimen.icon_choice_margin)
+    private fun setupIconPicker() {
+        val open = View.OnClickListener { openIconPicker() }
+        findViewById<View>(R.id.icon_picker).setOnClickListener(open)
+        findViewById<View>(R.id.icon_change).setOnClickListener(open)
+        updateIconPreview()
+    }
 
-        for ((name, resId) in MqttWidgetProvider.ICONS) {
-            val image = ImageView(this).apply {
-                layoutParams = GridLayout.LayoutParams().apply {
-                    width = size
-                    height = size
-                    setMargins(margin, margin, margin, margin)
-                }
-                scaleType = ImageView.ScaleType.CENTER_INSIDE
-                setPadding(margin, margin, margin, margin)
-                setImageResource(resId)
-                contentDescription = name
-                background = ContextCompat.getDrawable(
-                    this@WidgetConfigActivity,
-                    if (name == selectedIcon) R.drawable.icon_selected_bg else R.drawable.icon_bg,
-                )
-                setOnClickListener {
-                    selectedIcon = name
-                    buildIconGrid()
-                }
-            }
-            iconGrid.addView(image)
+    private fun openIconPicker() {
+        IconPickerDialog.show(this, selectedIcon) { name ->
+            selectedIcon = name
+            updateIconPreview()
         }
+    }
+
+    private fun updateIconPreview() {
+        MaterialIconFont.bind(iconPreview, selectedIcon)
+        iconName.text = selectedIcon
     }
 
     private fun setupQos() {

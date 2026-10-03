@@ -3,7 +3,7 @@ package com.chn.mqttwidget
 import org.json.JSONObject
 
 data class WidgetConfig(
-    val icon: String = "ic_power",
+    val icon: String = IconCatalog.DEFAULT_ICON,
     val label: String = "",
     val host: String = "",
     val port: Int = 1883,
@@ -66,7 +66,7 @@ data class WidgetConfig(
         }
 
         fun fromJson(json: JSONObject): WidgetConfig = WidgetConfig(
-            icon = json.optString("icon", "ic_power"),
+            icon = json.optString("icon", IconCatalog.DEFAULT_ICON),
             label = json.optString("label", ""),
             host = json.optString("host", ""),
             port = json.optInt("port", 1883),

@@ -87,6 +87,21 @@ export ANDROID_HOME=/home/chn/Android/Sdk
   WorkManager job when a widget is tapped; it does not subscribe.
 - Widget config UI: `WidgetConfigActivity`; storage: `WidgetConfigStore`
   (per-appWidgetId JSON in SharedPreferences).
+- Widget icons come from the bundled **Material Icons font**
+  (`app/src/main/assets/fonts/MaterialIcons-Regular.ttf`, Apache 2.0, license in
+  the same folder) — not from vector drawables. The picker
+  (`IconPickerDialog`) lists every glyph in the catalog file
+  `material_icons.codepoints` ("name hex-codepoint" per line, shipped next to
+  the font). A widget cannot show text in a custom font, so
+  `MaterialIconFont.bitmap` rasterizes the glyph into a tinted bitmap for the
+  `RemoteViews` ImageView; app screens render it as text (`bind`). To update the
+  icon set, replace both files from
+  <https://github.com/google/material-design-icons/tree/master/font> and keep
+  `IconCatalog.DEFAULT_ICON` pointing at an existing glyph name. Icon names are
+  stored in `WidgetConfig.icon`; unknown names (and the legacy `ic_*` drawable
+  names) fall back to the default glyph. The remaining `ic_power`/`ic_mqtt`
+  drawables are app chrome only: widget preview placeholder and notification
+  small icon.
 - Known-scope troubleshooting aid: publish failures surface as a Toast with the
   Paho reason code (`PublishErrors.describe`).
 - **Never rely on a Toast alone for publish results.** A toast posted from the

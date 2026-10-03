@@ -56,7 +56,7 @@ class WidgetConfigTest {
     @Test
     fun `json round trip preserves every field`() {
         val config = WidgetConfig(
-            icon = "ic_bell",
+            icon = "notifications",
             label = "Doorbell",
             host = "broker.local",
             port = 8883,
@@ -80,7 +80,7 @@ class WidgetConfigTest {
         assertEquals("h", restored.host)
         assertEquals("t", restored.topic)
         assertEquals(1883, restored.port)
-        assertEquals("ic_power", restored.icon)
+        assertEquals(IconCatalog.DEFAULT_ICON, restored.icon)
         assertFalse(restored.tls)
         assertEquals(0, restored.qos)
     }

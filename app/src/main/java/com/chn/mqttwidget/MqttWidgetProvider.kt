@@ -6,8 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -142,13 +140,21 @@ class MqttWidgetProvider : AppWidgetProvider() {
         ): RemoteViews {
             val views = RemoteViews(context.packageName, R.layout.widget_layout)
 
-            val iconRes = iconResource(config?.icon ?: "ic_power")
             val tint = when (status) {
                 STATUS_OK -> ContextCompat.getColor(context, R.color.status_ok)
                 STATUS_ERROR -> ContextCompat.getColor(context, R.color.status_error)
                 else -> ContextCompat.getColor(context, R.color.widget_icon)
             }
-            views.setImageViewBitmap(R.id.widget_icon, tintedBitmap(context, iconRes, tint))
+            val iconSize = (48 * context.resources.displayMetrics.density).toInt().coerceAtLeast(48)
+            views.setImageViewBitmap(
+                R.id.widget_icon,
+                MaterialIconFont.bitmap(
+                    context,
+                    config?.icon ?: IconCatalog.DEFAULT_ICON,
+                    tint,
+                    iconSize,
+                ),
+            )
             views.setTextViewText(
                 R.id.widget_label,
                 config?.label?.ifBlank { context.getString(R.string.app_name) }
@@ -167,45 +173,6 @@ class MqttWidgetProvider : AppWidgetProvider() {
             )
             views.setOnClickPendingIntent(R.id.widget_root, pendingIntent)
             return views
-        }
-
-        fun iconResource(name: String): Int = when (name) {
-            "ic_light" -> R.drawable.ic_light
-            "ic_home" -> R.drawable.ic_home
-            "ic_bell" -> R.drawable.ic_bell
-            "ic_lock" -> R.drawable.ic_lock
-            "ic_thermostat" -> R.drawable.ic_thermostat
-            "ic_fan" -> R.drawable.ic_fan
-            "ic_tv" -> R.drawable.ic_tv
-            "ic_coffee" -> R.drawable.ic_coffee
-            "ic_garage" -> R.drawable.ic_garage
-            "ic_mqtt" -> R.drawable.ic_mqtt
-            else -> R.drawable.ic_power
-        }
-
-        val ICONS = listOf(
-            "ic_power" to R.drawable.ic_power,
-            "ic_light" to R.drawable.ic_light,
-            "ic_home" to R.drawable.ic_home,
-            "ic_bell" to R.drawable.ic_bell,
-            "ic_lock" to R.drawable.ic_lock,
-            "ic_thermostat" to R.drawable.ic_thermostat,
-            "ic_fan" to R.drawable.ic_fan,
-            "ic_tv" to R.drawable.ic_tv,
-            "ic_coffee" to R.drawable.ic_coffee,
-            "ic_garage" to R.drawable.ic_garage,
-            "ic_mqtt" to R.drawable.ic_mqtt,
-        )
-
-        private fun tintedBitmap(context: Context, resId: Int, color: Int): Bitmap {
-            val drawable = ContextCompat.getDrawable(context, resId)!!.mutate()
-            drawable.setTint(color)
-            val size = (48 * context.resources.displayMetrics.density).toInt().coerceAtLeast(48)
-            val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, size, size)
-            drawable.draw(canvas)
-            return bitmap
         }
     }
 }
